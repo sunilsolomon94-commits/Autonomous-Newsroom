@@ -1,0 +1,46 @@
+anchor:
+  name: "Mira"
+  style: "calm, precise, fast, neutral diction. no editorializing adjectives."
+  disclosure_line: "I'm Mira, an AI presenter for Cited. This report is machine generated and every claim is sourced."
+  voice_provider: "heygen"
+  voice_id: "PLACEHOLDER_VOICE_ID"
+  avatar_id: "PLACEHOLDER_AVATAR_ID"
+  appearance_brief: |
+    Photorealistic upper-body of a calm, composed female presenter in her early
+    thirties, seated or standing in a neutral confident posture. Her face is
+    fully covered by a refined theatrical mask: a Japanese Noh ko-omote crossed
+    with a Venetian Volto. Matte ivory / bone finish, no glossiness. Neutral
+    serene expression sculpted into the mask, no painted features, no smile,
+    no patterns. Full face coverage. Eye openings present, with dark restful
+    eyes barely visible within (not glowing, not empty). A single fine teal
+    seam traces the mask's edge along the brow line, the brand accent.
+    Hair is dark, tied back in a low loose chignon with a few soft strands free.
+    She wears a structured high-neck garment in deep charcoal ink with thin
+    teal piping at the collar, modern and clerical in feel, not historical
+    costume. Clean modern newsroom set behind her in soft near-black charcoal
+    with subtle depth, uncluttered. Soft even studio key light, slightly cool.
+    Premium, theatrical, mysterious, and credible.
+    Brand reference: the Venetian Bauta was worn for political anonymity by
+    those who needed to speak truth without identity. Mira is that, restated
+    for an autonomous newsroom.
+    Avoid: scary or demonic mask references, glossy or plastic finish, painted
+    patterns on the mask, sci-fi visor or helmet shapes, exaggerated features,
+    hot carnival colors, kitsune or oni or hannya styling, hot pink/red accents.
+brand:
+  palette:
+    ink: "#15171C"
+    paper: "#F4F1EA"
+    accent: "#3FB8C4"
+    cite: "#E0A23C"
+  motif: "a thin verification ring used in the lower third and source chips"
+channel:
+  name: "Cited"
+  tagline: "AI newsroom. Every claim sourced. All code open."
+  beat: "technology_and_ai"
+  language: "en"
+  platforms: [youtube, youtube_shorts, instagram_reels, x, linkedin]
+  platforms_conditional: [tiktok]
+  format:
+    long_form_seconds: 240
+    short_form_seconds: 50
+    aspect_primary: "9:16"

@@ -1,0 +1,90 @@
+# Cited - autonomous daily run on GitHub's free scheduled runners. v1.2
+# v1.1: radar memory + audit log persist between runs; Node-24-ready actions.
+# v1.2: after the editorial run, build the public site (today's brief + the
+#       tamper-evident audit log) and publish it to GitHub Pages. The Pages steps
+#       are fully guarded (separate job + continue-on-error): a publishing problem
+#       can never break the editorial run, which is the core of the project.
+name: Cited daily run
+
+on:
+  schedule:
+    - cron: "30 22 * * *"      # 04:00 IST daily
+  workflow_dispatch: {}         # one-click manual trigger
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Restore radar memory + audit log (state from last run)
+        uses: actions/cache/restore@v5
+        with:
+          path: data
+          key: cited-state-${{ github.run_id }}
+          restore-keys: |
+            cited-state-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt anthropic
+
+      - name: Run the pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+        run: PYTHONPATH=. python orchestration/run_autonomous.py
+
+      - name: Save state for the next run
+        if: always()
+        uses: actions/cache/save@v5
+        with:
+          path: data
+          key: cited-state-${{ github.run_id }}
+
+      - name: Save the run report + audit log (90-day backup)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cited-run-${{ github.run_number }}
+          path: data/
+          if-no-files-found: ignore
+
+      # --- Publishing (guarded: never fails the editorial run) ---
+      - name: Build the public site (brief + audit log)
+        if: always()
+        continue-on-error: true
+        run: PYTHONPATH=. python pipeline/site.py
+
+      - name: Upload the built site for Pages
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  # Separate job so any Pages/plan issue is fully isolated from the engine above.
+  deploy:
+    needs: run
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Configure Pages (auto-enables if the repo plan allows)
+        continue-on-error: true
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        continue-on-error: true
+        uses: actions/deploy-pages@v4

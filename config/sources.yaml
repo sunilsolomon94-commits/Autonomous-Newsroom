@@ -1,0 +1,47 @@
+# Tiered sources for technology + AI coverage. Tier weights feed the confidence gate.
+# tier1 = primary/official, tier2 = reputable press, tier3 = aggregators/signals.
+# The `signals` block holds LEADING indicators the trend radar (pipeline/trends.py)
+# watches for velocity -- where AI news breaks days before the press cycle.
+tiers:
+  tier1:
+    weight: 1.0
+    feeds:
+      - https://openai.com/blog/rss.xml
+      - https://blog.google/technology/ai/rss/
+      - https://www.anthropic.com/rss.xml
+      - https://arxiv.org/rss/cs.AI
+      - https://arxiv.org/rss/cs.CL
+      - https://arxiv.org/rss/cs.LG
+  tier2:
+    weight: 0.7
+    feeds:
+      - https://techcrunch.com/feed/
+      - https://www.theverge.com/rss/index.xml
+      - https://arstechnica.com/feed/
+      - https://venturebeat.com/category/ai/feed/
+      # v1.2: more reputable tier-2 outlets -> more cross-outlet corroboration.
+      # Each URL verified to resolve and parse with feedparser before adding.
+      - https://www.wired.com/feed/rss
+      - https://www.engadget.com/rss.xml
+      - https://www.theregister.com/headlines.atom
+      - https://www.technologyreview.com/feed/
+  tier3:
+    weight: 0.4
+    feeds:
+      - https://www.reddit.com/r/LocalLLaMA/.rss
+      - https://www.reddit.com/r/MachineLearning/.rss
+      - gdelt
+      - hackernews_frontpage
+
+# Leading indicators -- velocity sources for the trend radar. The RSS ones flow
+# through ingest; the API-named ones (github/hf/trends/hn) wire separately, like
+# gdelt. Each is weighted for ACCELERATION, not absolute volume.
+signals:
+  github_trending: api          # new releases + star-velocity (model weights, tools)
+  huggingface_trending: api     # model/dataset download-velocity
+  hackernews_algolia: api       # front-page velocity + "new" firehose
+  google_trends_rising: api     # rising search queries (intent before mainstream)
+
+apis:
+  newsapi: env:NEWS_API_KEY
+  gdelt: none

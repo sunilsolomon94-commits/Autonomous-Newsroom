@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cited — AI newsroom. Every claim sourced.</title>
+<meta name="description" content="A daily AI brief where every claim shows its sources. Open code, public audit log. Verify me, not trust me.">
+<style>
+  :root{
+    --ink:#15171C; --paper:#F4F1EA; --accent:#3FB8C4; --cite:#E0A23C;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:64px 24px 48px}
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:40px}
+  .brand h1{font-size:24px; letter-spacing:.5px; margin:0; font-weight:800}
+  .tag{font-size:13px; color:#555; margin-top:2px}
+  h2{font-size:30px; line-height:1.2; margin:0 0 16px}
+  .lede{font-size:17px; color:#333; margin:0 0 28px}
+  form{display:flex; gap:10px; flex-wrap:wrap; margin:0 0 14px}
+  input[type=email]{
+    flex:1 1 240px; padding:13px 14px; font-size:16px; border:1.5px solid var(--ink);
+    border-radius:8px; background:#fff; color:var(--ink);
+  }
+  button{
+    padding:13px 22px; font-size:16px; font-weight:700; border:0; border-radius:8px;
+    background:var(--cite); color:var(--ink); cursor:pointer;
+  }
+  button:hover{filter:brightness(.96)}
+  .fine{font-size:12px; color:#666; margin:0 0 36px}
+  .promise{border-top:1px solid #ccc; padding-top:22px; font-size:14px; color:#444}
+  .promise b{color:var(--ink)}
+  .chips{margin-top:8px}
+  .chip{display:inline-block; margin:4px 6px 0 0; padding:3px 10px; font-size:12px;
+    border:1px solid var(--accent); border-radius:12px; color:var(--ink)}
+  .msg{font-size:14px; margin:8px 0 0; min-height:20px}
+  a{color:var(--ink)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <!-- Verification ring + check: the brand motif -->
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <circle cx="17" cy="17" r="13" fill="none" stroke="#3FB8C4" stroke-width="2.5"/>
+        <path d="M11 17 l4 4 l8 -9" fill="none" stroke="#E0A23C" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h1>Cited</h1>
+        <div class="tag">AI newsroom. Every claim sourced. All code open.</div>
+      </div>
+    </div>
+
+    <h2>The AI brief that shows its receipts.</h2>
+    <p class="lede">
+      Two or three things in AI that actually matter today — each one with the
+      sources, side by side, so you can check it yourself. Built by open code with a
+      public, tamper-evident audit log. No hype, no hot takes.
+      <strong>Verify me, not trust me.</strong>
+    </p>
+
+    <!--
+      PROVIDER WIRING: replace the form `action` with your email tool's embed endpoint
+      (beehiiv / Substack / ConvertKit / Buttondown all give you one). Until then this
+      form just shows a local confirmation and does not store anything.
+      See web/README.md for the deploy steps.
+    -->
+    <form id="signup" action="" method="post" novalidate>
+      <input type="email" name="email" placeholder="you@work.com" required aria-label="Email address">
+      <button type="submit">Get the daily brief</button>
+    </form>
+    <p class="msg" id="msg" role="status"></p>
+    <p class="fine">
+      Free. One email a day. Unsubscribe anytime. We collect the minimum and never sell
+      your data — a consent notice + privacy policy go live before any personalization.
+    </p>
+
+    <div class="promise">
+      <b>Why this is different</b>
+      <div class="chips">
+        <span class="chip">≥2 independent outlets per claim</span>
+        <span class="chip">sources on every line</span>
+        <span class="chip">open source</span>
+        <span class="chip">public audit log</span>
+        <span class="chip">holds when unsure</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Graceful fallback until the form is wired to a provider: if no action URL is set,
+    // confirm locally so the page is testable. Once `action` points at your email tool,
+    // remove this and let the form submit normally.
+    var form = document.getElementById('signup');
+    var msg = document.getElementById('msg');
+    form.addEventListener('submit', function (e) {
+      var email = form.email.value.trim();
+      if (!email || email.indexOf('@') === -1) {
+        e.preventDefault();
+        msg.textContent = 'Please enter a valid email.';
+        return;
+      }
+      if (!form.getAttribute('action')) {
+        e.preventDefault();
+        msg.textContent = 'Thanks — you’re on the list. (Demo mode: wire the form to your email tool to store this.)';
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>

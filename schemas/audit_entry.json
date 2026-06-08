@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AuditEntry",
+  "type": "object",
+  "required": ["seq", "timestamp", "story_id", "decision", "prev_hash", "hash"],
+  "properties": {
+    "seq": {"type": "integer"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "story_id": {"type": "string"},
+    "decision": {"type": "string"},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "prev_hash": {"type": "string"},
+    "hash": {"type": "string"}
+  }
+}

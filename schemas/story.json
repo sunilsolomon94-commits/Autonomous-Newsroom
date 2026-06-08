@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Story",
+  "type": "object",
+  "required": ["id", "headline", "claims", "sources", "decision"],
+  "properties": {
+    "id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "headline": {"type": "string"},
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "source_ids", "confidence"],
+        "properties": {
+          "text": {"type": "string"},
+          "source_ids": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"type": "number"},
+          "names_living_person": {"type": "boolean"},
+          "negative_about_person": {"type": "boolean"}
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "url", "tier"],
+        "properties": {
+          "id": {"type": "string"},
+          "url": {"type": "string"},
+          "tier": {"type": "integer"},
+          "publisher": {"type": "string"}
+        }
+      }
+    },
+    "decision": {"type": "string", "enum": ["publish", "hold", "correct"]},
+    "decision_reasons": {"type": "array", "items": {"type": "string"}}
+  }
+}

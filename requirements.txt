@@ -1,0 +1,4 @@
+feedparser
+requests
+pyyaml
+# anthropic   # required for the credentialed modules (cluster.to_claims, script.write)

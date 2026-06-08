@@ -1,0 +1,32 @@
+# Enforced in code (pipeline/verify.py). The editorial conscience of the channel.
+# No human overrides these at publish time.
+
+confidence_gate:
+  min_independent_sources: 2          # a claim needs at least 2 independent sources
+  # Source authority: a claim needs EITHER one tier-1 (primary/official) source
+  # OR this many independent tier-2 (reputable press) sources. Tier-3 never counts.
+  require_tier1_or_tier2_count: 3
+  hold_if_sources_conflict: true      # conflicting facts means hold and flag
+  publish_threshold: 0.7              # aggregate confidence 0..1
+
+named_person_gate:
+  enabled: true
+  trigger_on: [allegation, criminality, misconduct, financial_wrongdoing, personal_conduct]
+  required_independent_sources: 3
+  require_tier1_source: true
+  require_subject_response_or_note: true
+  on_fail: hold
+
+corrections:
+  auto_correct_on_source_retraction: true
+  correction_visible: true
+  log_all_corrections: true
+
+prohibited:
+  - private_individuals_non_public_matters
+  - unverified_medical_or_legal_advice
+  - content_naming_minors_negatively
+
+disclosure:
+  ai_generated_label: true
+  show_on_every_video: true
